@@ -174,4 +174,8 @@
 
     <string name="settings">设置</string>
     <string name="about_introduce_and_help">介绍</string>
+    <string name="search_hint">搜索</string>
+    <string name="search_result_title">搜索</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
