@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,12 +20,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import top.cokernut.news.NewsApp;
 import top.cokernut.news.R;
+import top.cokernut.news.adapter.ViewPagerAdapter;
+import top.cokernut.news.config.URL;
+import top.cokernut.news.fragment.NewListFragment;
+import top.cokernut.news.model.URLModel;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar mToolbar;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private ViewPagerAdapter mAdapter;
+    private List<Fragment> mFragments = new ArrayList<>();
+    private List<URLModel> mDatas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,26 +47,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        initData();
+        initView();
+    }
+
+    private void initData() {
+        mDatas = URL.getUrls();
+        mFragments = new ArrayList<>();
+        for (int i = 0; i < mDatas.size(); i++) {
+            Bundle mBundle = new Bundle();
+            mBundle.putString(NewListFragment.URL, mDatas.get(i).getUrl());
+            NewListFragment fragment = new NewListFragment();
+            fragment.setArguments(mBundle);
+            mFragments.add(fragment);
+        }
+    }
+
+    private void initView() {
+        mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mDatas, mFragments);
+        mViewPager.setAdapter(mAdapter);
+        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void setupSearchView(Menu menu) {
+        /*
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final MenuItem searchMenuItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchMenuItem.getActionView();
@@ -85,11 +124,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         @Override
                         public boolean onQueryTextChange(String newText) {
-                            // TODO Auto-generated method stub
                             return false;
                         }
                     });
-        }
+        }*/
     }
 
     @Override
@@ -105,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        setupSearchView(menu);
+      //  setupSearchView(menu);
         return true;
     }
 
