@@ -37,7 +37,7 @@ public class AboutActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action:
+            case R.id.action_about:
                 return true;
         }
         return super.onOptionsItemSelected(item);
