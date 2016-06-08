@@ -1,10 +1,13 @@
 package top.cokernut.news.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 
@@ -34,16 +37,23 @@ public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAd
 
     @Override
     protected void bindView(BaseViewHolder holder, int position) {
-        if (mData.get(mData.size() - 1) == null) {
+        if (mData.get(position) == null) {
             return;
         }
-        ViewHolder vh = (ViewHolder) holder;
-        vh.txt.setText(mData.get(position).getTitle());
+        if (holder instanceof ViewHolder) {
+            ViewHolder vh = (ViewHolder) holder;
+            vh.title.setText(mData.get(position).getTitle());
+            vh.time.setText(mData.get(position).getCtime());
+            if (!TextUtils.isEmpty(mData.get(position).getPicUrl())) {
+                Uri uri = Uri.parse(mData.get(position).getPicUrl());
+                vh.img.setImageURI(uri);
+            }
+        }
     }
 
     @Override
     protected int getItemType(int position) {
-        if (mData.get(mData.size() - 1) == null) {
+        if (mData.get(position) == null) {
             return FOOTER;
         } else {
             return NEW;
@@ -51,11 +61,15 @@ public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAd
     }
 
     class ViewHolder extends BaseRecyclerAdapter.BaseViewHolder {
-        public TextView txt;
+        public TextView title;
+        public TextView time;
+        public SimpleDraweeView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            txt = (TextView) itemView.findViewById(R.id.tv_txt);
+            title = (TextView) itemView.findViewById(R.id.title);
+            time = (TextView) itemView.findViewById(R.id.time);
+            img = (SimpleDraweeView) itemView.findViewById(R.id.img);
         }
     }
 

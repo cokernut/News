@@ -8,7 +8,7 @@ import top.cokernut.news.model.URLModel;
 /**
  * Created by Cokernut on 2016/6/7.
  */
-public class URL {
+public class URLConfig {
 
     /**
      *
@@ -41,26 +41,12 @@ public class URL {
      ]
      }
 
-     错误码：
-     '130' => 'APIKEY被禁用'
-     '140' => '该接口已关闭'
-     '210' => 'num参数不合法'
-     '220' => '缺少num参数'
-     '230' => 'key错误或为空'
-     '240' => '缺少key参数'
-     '250' => '未检索到相关信息'
-     '260' => '关键词不得为空'
-     '270' => '剩余请求次数为零'
-     '280' => '缺少有效数据'
-     '290' => '返回的内容为空'
-     '300' => '缺少必要的参数'
-
      */
 
-    private static final String APP_KEY = "210e73956076a724ee7600c4a22eb9be";
     private static List<URLModel> urls = new ArrayList<>();
+    public static final String BASE_URL = "http://apis.baidu.com/txapi/";
+    public static final String API_KEY = "210e73956076a724ee7600c4a22eb9be";
     static {
-        urls.add(new URLModel("微信精选", "http://apis.baidu.com/txapi/wxnew/wxnew"));
         urls.add(new URLModel("科技新闻", "http://apis.baidu.com/txapi/keji/keji"));
         urls.add(new URLModel("社会新闻", "http://apis.baidu.com/txapi/social/social"));
         urls.add(new URLModel("体育新闻", "http://apis.baidu.com/txapi/tiyu/tiyu"));

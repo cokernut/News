@@ -1,16 +1,9 @@
 package top.cokernut.news.activity;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,7 +19,7 @@ import java.util.List;
 import top.cokernut.news.NewsApp;
 import top.cokernut.news.R;
 import top.cokernut.news.adapter.ViewPagerAdapter;
-import top.cokernut.news.config.URL;
+import top.cokernut.news.config.URLConfig;
 import top.cokernut.news.fragment.NewListFragment;
 import top.cokernut.news.model.URLModel;
 
@@ -36,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
-    private List<Fragment> mFragments = new ArrayList<>();
+    private List<NewListFragment> mFragments = new ArrayList<>();
     private List<URLModel> mDatas = new ArrayList<>();
 
     @Override
@@ -71,11 +64,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initData() {
-        mDatas = URL.getUrls();
+        mDatas = URLConfig.getUrls();
         mFragments = new ArrayList<>();
         for (int i = 0; i < mDatas.size(); i++) {
             Bundle mBundle = new Bundle();
-            mBundle.putString(NewListFragment.URL, mDatas.get(i).getUrl());
+            mBundle.putString(NewListFragment.URL_STR, mDatas.get(i).getUrl());
             NewListFragment fragment = new NewListFragment();
             fragment.setArguments(mBundle);
             mFragments.add(fragment);

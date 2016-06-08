@@ -23,8 +23,8 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:id="@+id/news_header"
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/activity_image"
@@ -39,7 +39,6 @@
                 android:layout_gravity="end|bottom"
                 android:maxLines="1"
                 android:maxWidth="300dp"
-                android:text="img_source"
                 android:textSize="7sp"
                 android:visibility="invisible"/>
 
@@ -62,6 +61,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_email"
         app:layout_anchor="@id/app_bar"
+        android:visibility="gone"
         app:layout_anchorGravity="bottom|end" />
 
 </android.support.design.widget.CoordinatorLayout>

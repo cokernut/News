@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
+import top.cokernut.news.fragment.NewListFragment;
 import top.cokernut.news.model.URLModel;
 
 /**
@@ -13,9 +14,9 @@ import top.cokernut.news.model.URLModel;
  */
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private List<URLModel> mDatas;
-    private List<Fragment> mFragments;
+    private List<NewListFragment> mFragments;
 
-    public ViewPagerAdapter(FragmentManager fm, List<URLModel> mDatas, List<Fragment> mFragments) {
+    public ViewPagerAdapter(FragmentManager fm, List<URLModel> mDatas, List<NewListFragment> mFragments) {
         super(fm);
         this.mDatas = mDatas;
         this.mFragments = mFragments;
@@ -27,7 +28,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public NewListFragment getItem(int position) {
         return mFragments.get(position);
     }
 
