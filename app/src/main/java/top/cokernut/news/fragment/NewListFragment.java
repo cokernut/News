@@ -129,29 +129,39 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     public void getData() {
-
-     /*   RequestParams params = new RequestParams();
-        params.put("num", pageSize);
-        params.put("page", pageIndex);
-        NetClient.get(urlStr, params, new AsyncHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                JSONObject json = JSON.parseObject(new String(responseBody));
-                if (1 == pageIndex) {
-                    mDatas = JSON.parseArray(json.getString("newslist"), NewModel.class);
-                } else {
-                    mDatas.addAll(JSON.parseArray(json.getString("newslist"), NewModel.class));
-                }
-                pageIndex++;
-                initViewData();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-            }
-        });*/
         if (!isLoading) {
+            RequestParams params = new RequestParams();
+            params.put("num", pageSize);
+            params.put("page", pageIndex);
+            NetClient.get(urlStr, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    try {
+                        JSONObject json = JSON.parseObject(new String(responseBody));
+                        if (1 == pageIndex) {
+                            mDatas = JSON.parseArray(json.getString("newslist"), NewModel.class);
+                        } else {
+                            mDatas.addAll(JSON.parseArray(json.getString("newslist"), NewModel.class));
+                        }
+                        pageIndex++;
+                        initViewData();
+                    } catch (Exception e) {
+
+                    } finally {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        isLoading = false;
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Snackbar.make(mSwipeRefreshLayout, new String(responseBody), Snackbar.LENGTH_LONG).show();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+            });
+        }
+        /*if (!isLoading) {
             Parameters para = new Parameters();
             para.put("num", pageSize);
             para.put("page", pageIndex);
@@ -189,7 +199,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     Snackbar.make(mSwipeRefreshLayout, responseString, Snackbar.LENGTH_LONG).show();
                 }
             });
-        }
+        }*/
     }
 
     private void initViewData() {
