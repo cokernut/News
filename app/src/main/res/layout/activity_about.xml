@@ -49,8 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8dp"
                     android:textColor="@color/icons"
-                    android:textSize="14sp"
-                    tools:text="Version 0.1.1"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar
