@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="常规">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="auto_update"
+            android:title="自动更新"/>
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:key="notifications_new_message_ringtone"
+            android:ringtoneType="notification"
+            android:title="铃声" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="push"
+            android:title="推送" />
+        <Preference
+            android:key="send"
+            android:title="反馈"/>
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_default_display_name"
+            android:inputType="textCapWords"
+            android:key="example_text"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_display_name" />
+        <ListPreference
+            android:defaultValue="-1"
+            android:entries="@array/pref_example_list_titles"
+            android:entryValues="@array/pref_example_list_values"
+            android:key="example_list"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_title_add_friends_to_messages" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="版本">
+        <Preference
+            android:key="version"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
