@@ -26,6 +26,13 @@
     <dimen name="margin_48dp">48dp</dimen>
     <dimen name="margin_56dp">56dp</dimen>
 
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_more_medium">12dp</dimen>
+    <dimen name="padding_more_medium_two">14dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_more_large">24dp</dimen>
+
     <dimen name="text_size_4dp">4dp</dimen>
     <dimen name="text_size_8dp">8dp</dimen>
     <dimen name="text_size_10dp">10dp</dimen>

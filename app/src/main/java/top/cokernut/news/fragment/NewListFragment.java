@@ -1,5 +1,6 @@
 package top.cokernut.news.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import top.cokernut.news.adapter.NewListAdapter;
 import top.cokernut.news.base.OnRVScrollListener;
 import top.cokernut.news.base.OnRecyclerItemClickListener;
 import top.cokernut.news.config.URLConfig;
+import top.cokernut.news.dialog.CustomDialog;
 import top.cokernut.news.model.NewModel;
 import top.cokernut.news.net.NetClient;
 
@@ -118,6 +120,26 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 intent.putExtra(DetailActivity.URL_IMG, mDatas.get(position).getPicUrl());
                 startActivity(intent);
             }
+
+            @Override
+            public void onItemLongClick(RecyclerView.ViewHolder vh, final int position) {
+                CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
+                builder.setMessage("喜欢这条新闻吗？");
+                builder.setTitle("提示");
+                builder.setPositiveButton(R.string.dislike, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mAdapter.removeItem(position);
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton(R.string.like, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
         });
     }
     
@@ -138,15 +160,20 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try {
                         JSONObject json = JSON.parseObject(new String(responseBody));
-                        if (1 == pageIndex) {
-                            mDatas = JSON.parseArray(json.getString("newslist"), NewModel.class);
+                        List<NewModel> result = JSON.parseArray(json.getString("newslist"), NewModel.class);
+                        if (result != null && result.size() > 0) {
+                            if (1 == pageIndex) {
+                                mDatas = JSON.parseArray(json.getString("newslist"), NewModel.class);
+                            } else {
+                                mDatas.addAll(JSON.parseArray(json.getString("newslist"), NewModel.class));
+                            }
+                            pageIndex++;
+                            initViewData();
                         } else {
-                            mDatas.addAll(JSON.parseArray(json.getString("newslist"), NewModel.class));
+                            Snackbar.make(mRecyclerView, "没有更多了！", Snackbar.LENGTH_SHORT).show();
                         }
-                        pageIndex++;
-                        initViewData();
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     } finally {
                         mSwipeRefreshLayout.setRefreshing(false);
                         isLoading = false;
@@ -155,7 +182,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Snackbar.make(mSwipeRefreshLayout, new String(responseBody), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mRecyclerView, new String(responseBody), Snackbar.LENGTH_LONG).show();
                     mSwipeRefreshLayout.setRefreshing(false);
                     isLoading = false;
                 }
