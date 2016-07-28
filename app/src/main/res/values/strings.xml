@@ -88,5 +88,6 @@
     <string name="cancel">取消</string>
     <string name="dislike">不喜欢</string>
     <string name="like">喜欢</string>
+    <string name="detail_title">详细内容</string>
 
 </resources>
