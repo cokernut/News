@@ -76,10 +76,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initView() {
-        mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mDatas, mFragments);
+        mAdapter = new ViewPagerAdapter(this, getSupportFragmentManager(), mDatas, mFragments);
         mViewPager.setAdapter(mAdapter);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         mTabLayout.setupWithViewPager(mViewPager);
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+            if (i == 0) {
+                tab.setCustomView(mAdapter.getTabView(i));
+            } else {
+                tab.setCustomView(mAdapter.getDefaultTabView(i));
+            }
+        }
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tab.setCustomView(null);
+                tab.setCustomView(mAdapter.getTabView(tab.getPosition()));
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                tab.setCustomView(null);
+                tab.setCustomView(mAdapter.getDefaultTabView(tab.getPosition()));
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private void setupSearchView(Menu menu) {
