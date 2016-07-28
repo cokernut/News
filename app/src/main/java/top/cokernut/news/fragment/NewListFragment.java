@@ -36,6 +36,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import top.cokernut.news.R;
 import top.cokernut.news.activity.DetailActivity;
+import top.cokernut.news.activity.MainActivity;
 import top.cokernut.news.adapter.NewListAdapter;
 import top.cokernut.news.base.OnRVScrollListener;
 import top.cokernut.news.base.OnRecyclerItemClickListener;
@@ -50,7 +51,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private View mView;
-    private ImageView mGoTopIV;
+   // private ImageView mGoTopIV;
 
     private String urlStr;
     private NewListAdapter mAdapter;
@@ -58,6 +59,8 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private int pageSize = 10;
     private int pageIndex = 1;
     private boolean isLoading = false;
+    private boolean isTop = true;
+    private MainActivity mainActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
         if (getArguments() != null) {
             urlStr = getArguments().getString(URL_STR);
         }
+        mainActivity = (MainActivity) getActivity();
     }
 
     @Override
@@ -76,7 +80,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
     
     private void initView() {
-        mGoTopIV = (ImageView) mView.findViewById(R.id.iv_go_top);
+      //  mGoTopIV = (ImageView) mView.findViewById(R.id.iv_go_top);
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.srl_view);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.wheat, R.color.accent);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -85,7 +89,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new NewListAdapter(getActivity(), mDatas);
         mRecyclerView.setAdapter(mAdapter);
-        mGoTopIV.setOnClickListener(new View.OnClickListener() {
+    /*    mGoTopIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mRecyclerView.getLayoutManager() instanceof LinearLayoutManager) {
@@ -93,7 +97,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 }
                 mGoTopIV.setVisibility(View.GONE);
             }
-        });
+        });*/
         mRecyclerView.addOnScrollListener(new OnRVScrollListener() {
             @Override
             public void onBottom() {
@@ -102,12 +106,16 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
             @Override
             public void onCenter() {
-                mGoTopIV.setVisibility(View.VISIBLE);
+                //mGoTopIV.setVisibility(View.VISIBLE);
+                mainActivity.setFabVisible(View.VISIBLE);
+                isTop = false;
             }
 
             @Override
             public void onTop() {
-                mGoTopIV.setVisibility(View.GONE);
+                //mGoTopIV.setVisibility(View.GONE);
+                mainActivity.setFabVisible(View.GONE);
+                isTop = true;
             }
         });
         mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
@@ -130,6 +138,8 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     public void onClick(DialogInterface dialog, int which) {
                         mAdapter.removeItem(position);
                         dialog.dismiss();
+                        Snackbar.make(mRecyclerView, "我们将会推送更多类似的内容！", Snackbar.LENGTH_LONG).show();
+                              //  .setAction("Action", null).show();
                     }
                 });
 
@@ -142,7 +152,18 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
             }
         });
     }
-    
+
+    public void goTop() {
+        if (mRecyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+            ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(0, 0);
+            isTop = true;
+        }
+    }
+
+    public boolean isTop() {
+        return isTop;
+    }
+
     @Override
     public void onRefresh() {
         pageIndex = 1;

@@ -2,6 +2,7 @@ package top.cokernut.news.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPagerAdapter mAdapter;
     private List<NewListFragment> mFragments = new ArrayList<>();
     private List<URLModel> mDatas = new ArrayList<>();
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +42,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                mFragments.get(mTabLayout.getSelectedTabPosition()).goTop();
+                setFabVisible(View.GONE);
             }
-        });*/
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void setFabVisible(int visibility) {
+        fab.setVisibility(visibility);
+    }
+
     private void initView() {
         mAdapter = new ViewPagerAdapter(this, getSupportFragmentManager(), mDatas, mFragments);
         mViewPager.setAdapter(mAdapter);
@@ -94,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 tab.setCustomView(null);
                 tab.setCustomView(mAdapter.getTabView(tab.getPosition()));
                 mViewPager.setCurrentItem(tab.getPosition());
+                if (mFragments.get(tab.getPosition()).isTop()) {
+                    setFabVisible(View.GONE);
+                } else {
+                    setFabVisible(View.VISIBLE);
+                }
             }
 
             @Override

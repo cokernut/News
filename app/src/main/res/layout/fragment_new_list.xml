@@ -16,17 +16,17 @@
             android:layout_height="wrap_content"
             android:foregroundGravity="center" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
+<!--
     <ImageView
         android:id="@+id/iv_go_top"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginRight="10dp"
         android:orientation="horizontal"
         android:src="@mipmap/bg_go_top"
-        android:visibility="gone" />
+        android:visibility="visible" />-->
 
 </RelativeLayout>
