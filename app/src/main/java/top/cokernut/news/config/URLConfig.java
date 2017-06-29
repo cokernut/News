@@ -44,18 +44,20 @@ public class URLConfig {
      */
 
     private static List<URLModel> urls = new ArrayList<>();
-    public static final String BASE_URL = "http://apis.baidu.com/txapi/";
-    public static final String API_KEY = "210e73956076a724ee7600c4a22eb9be";
+    public static final String BASE_URL = "http://api.tianapi.com";
+    public static final String API_KEY = "fc7d0977e4da244cfa45cb10a483f745";
     static {
-        urls.add(new URLModel("科技新闻", "http://apis.baidu.com/txapi/keji/keji"));
-        urls.add(new URLModel("社会新闻", "http://apis.baidu.com/txapi/social/social"));
-        urls.add(new URLModel("体育新闻", "http://apis.baidu.com/txapi/tiyu/tiyu"));
-        urls.add(new URLModel("国际新闻", "http://apis.baidu.com/txapi/world/world"));
-        urls.add(new URLModel("苹果新闻", "http://apis.baidu.com/txapi/apple/apple"));
-        urls.add(new URLModel("娱乐花边", "http://apis.baidu.com/txapi/huabian/newtop"));
-        urls.add(new URLModel("美女图片", "http://apis.baidu.com/txapi/mvtp/meinv"));
-        urls.add(new URLModel("奇闻趣事", "http://apis.baidu.com/txapi/qiwen/qiwen"));
-        urls.add(new URLModel("生活健康", "http://apis.baidu.com/txapi/health/health"));
+        urls.add(new URLModel("科技新闻", BASE_URL + "/keji/"));
+        urls.add(new URLModel("移动互联", BASE_URL + "/mobile/"));
+        urls.add(new URLModel("IT资讯", BASE_URL + "/it/"));
+        urls.add(new URLModel("社会新闻", BASE_URL + "/social/"));
+        urls.add(new URLModel("体育新闻", BASE_URL + "/tiyu/"));
+        urls.add(new URLModel("国际新闻", BASE_URL + "/world/"));
+        urls.add(new URLModel("国内新闻", BASE_URL + "/guonei/"));
+        urls.add(new URLModel("娱乐花边", BASE_URL + "/huabian/"));
+        urls.add(new URLModel("美女图片", BASE_URL + "/meinv/"));
+        urls.add(new URLModel("奇闻趣事", BASE_URL + "/qiwen/"));
+        urls.add(new URLModel("生活健康", BASE_URL + "/health/"));
     }
 
     public static List<URLModel> getUrls() {

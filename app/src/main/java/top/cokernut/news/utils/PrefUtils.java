@@ -7,7 +7,6 @@ import top.cokernut.news.NewsApp;
 
 /**
  * 用来快速获取相关的设置
- * Created by Troy on 2015/9/20.
  */
 public class PrefUtils {
 

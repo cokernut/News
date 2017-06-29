@@ -2,7 +2,6 @@ package top.cokernut.news.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -10,26 +9,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baidu.apistore.sdk.ApiCallBack;
-import com.baidu.apistore.sdk.ApiStoreSDK;
-import com.baidu.apistore.sdk.network.Parameters;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -174,6 +162,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public void getData() {
         if (!isLoading) {
             RequestParams params = new RequestParams();
+            params.put("key", URLConfig.API_KEY);
             params.put("num", pageSize);
             params.put("page", pageIndex);
             NetClient.get(urlStr, params, new AsyncHttpResponseHandler() {
