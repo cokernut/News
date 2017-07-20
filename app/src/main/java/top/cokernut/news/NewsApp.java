@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +18,7 @@ public class NewsApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fresco.initialize(this);
-        mContext = this;
+        mContext = getApplicationContext();
     }
 
     public static Context getContext() {

@@ -13,15 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-import cz.msebera.android.httpclient.Header;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import top.cokernut.news.R;
 import top.cokernut.news.activity.DetailActivity;
 import top.cokernut.news.activity.MainActivity;
@@ -30,8 +32,9 @@ import top.cokernut.news.base.OnRVScrollListener;
 import top.cokernut.news.base.OnRecyclerItemClickListener;
 import top.cokernut.news.config.URLConfig;
 import top.cokernut.news.dialog.CustomDialog;
+import top.cokernut.news.http.HttpCall;
+import top.cokernut.news.http.result.NewsListResult;
 import top.cokernut.news.model.NewModel;
-import top.cokernut.news.net.NetClient;
 
 public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final String URL_STR = "url";
@@ -161,6 +164,39 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     public void getData() {
         if (!isLoading) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("key", URLConfig.API_KEY);
+            params.put("num", pageSize);
+            params.put("page", pageIndex);
+            Call<NewsListResult> news = HttpCall.getApiService().getNews(urlStr, params);
+            news.enqueue(new Callback<NewsListResult>() {
+                @Override
+                public void onResponse(Call<NewsListResult> call, Response<NewsListResult> response) {
+                    List<NewModel> result = response.body().getNewslist();
+                    if (result != null && result.size() > 0) {
+                        if (1 == pageIndex) {
+                            mDatas = result;
+                        } else {
+                            mDatas.addAll(result);
+                        }
+                        pageIndex++;
+                        initViewData();
+                    } else {
+                        Snackbar.make(mRecyclerView, "没有更多了！", Snackbar.LENGTH_SHORT).show();
+                    }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+
+                @Override
+                public void onFailure(Call<NewsListResult> call, Throwable t) {
+                    Snackbar.make(mRecyclerView, "加载失败！", Snackbar.LENGTH_LONG).show();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+            });
+        }
+        /*if (!isLoading) {
             RequestParams params = new RequestParams();
             params.put("key", URLConfig.API_KEY);
             params.put("num", pageSize);
@@ -197,46 +233,10 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     isLoading = false;
                 }
             });
-        }
-        /*if (!isLoading) {
-            Parameters para = new Parameters();
-            para.put("num", pageSize);
-            para.put("page", pageIndex);
-            isLoading = true;
-            if (pageIndex > 1) {
-                mDatas.add(null);
-                mAdapter.setData(mDatas);
-            }
-            ApiStoreSDK.execute(urlStr, ApiStoreSDK.GET, para, new ApiCallBack() {
-                @Override
-                public void onSuccess(int status, String responseString) {
-                    try {
-                        JSONObject json = JSON.parseObject(responseString);
-                        if (1 == pageIndex) {
-                            mDatas = JSON.parseArray(json.getString("newslist"), NewModel.class);
-                        } else {
-                            mDatas.remove(mDatas.size() - 1);
-                            mDatas.addAll(JSON.parseArray(json.getString("newslist"), NewModel.class));
-                        }
-                        pageIndex++;
-                        initViewData();
-                    } catch (Exception e) {
-
-                    }
-                }
-
-                @Override
-                public void onComplete() {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    isLoading = false;
-                }
-
-                @Override
-                public void onError(int status, String responseString, Exception e) {
-                    Snackbar.make(mSwipeRefreshLayout, responseString, Snackbar.LENGTH_LONG).show();
-                }
-            });
         }*/
+        if (!isLoading) {
+
+        }
     }
 
     private void initViewData() {

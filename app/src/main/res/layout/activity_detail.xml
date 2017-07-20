@@ -24,14 +24,13 @@
             app:title="@string/detail_title"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/activity_image"
                 android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax"/>
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/img_source"

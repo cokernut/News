@@ -1,11 +1,8 @@
 package top.cokernut.news.activity;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,7 +15,9 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import top.cokernut.news.R;
 import top.cokernut.news.base.BaseActivity;
@@ -29,7 +28,7 @@ public class DetailActivity extends BaseActivity {
     public static final String URL_IMG = "img";
 
     private WebView mWebView;
-    private SimpleDraweeView mImg;
+    private ImageView mImg;
     private TextView mImgSource;
     private CollapsingToolbarLayout mToolbarLayout;
 
@@ -45,13 +44,20 @@ public class DetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mWebView = (WebView) findViewById(R.id.webView);
-        mImg = (SimpleDraweeView) findViewById(R.id.img);
+        mImg = (ImageView) findViewById(R.id.img);
         mImgSource = (TextView) findViewById(R.id.img_source);
         mToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
         mUrl = getIntent().getStringExtra(URL_STR);
         mImgUrl = getIntent().getStringExtra(URL_IMG);
-        mImg.setImageURI(Uri.parse(mImgUrl));
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher);
+        Glide.with(this)
+                .load(mImgUrl)
+                .apply(options)
+                .into(mImg);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -59,7 +65,6 @@ public class DetailActivity extends BaseActivity {
         webSettings.setDatabaseEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDefaultTextEncodingName("utf-8");
-        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         mWebView.setWebChromeClient(new ChromeClient());
         mWebView.setWebViewClient(new ViewClient());
         mWebView.loadUrl(mUrl);

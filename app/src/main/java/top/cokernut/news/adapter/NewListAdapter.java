@@ -5,9 +5,11 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -46,7 +48,14 @@ public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAd
             vh.time.setText(mData.get(position).getCtime());
             if (!TextUtils.isEmpty(mData.get(position).getPicUrl())) {
                 Uri uri = Uri.parse(mData.get(position).getPicUrl());
-                vh.img.setImageURI(uri);
+                RequestOptions options = new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher);
+                Glide.with(mContext)
+                        .load(uri)
+                        .apply(options)
+                        .into(vh.img);
             }
         }
     }
@@ -60,20 +69,20 @@ public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAd
         }
     }
 
-    class ViewHolder extends BaseRecyclerAdapter.BaseViewHolder {
+    static class ViewHolder extends BaseRecyclerAdapter.BaseViewHolder {
         public TextView title;
         public TextView time;
-        public SimpleDraweeView img;
+        public ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             time = (TextView) itemView.findViewById(R.id.time);
-            img = (SimpleDraweeView) itemView.findViewById(R.id.img);
+            img = (ImageView) itemView.findViewById(R.id.img);
         }
     }
 
-    class FooterViewHolder extends BaseRecyclerAdapter.BaseViewHolder {
+    static class FooterViewHolder extends BaseRecyclerAdapter.BaseViewHolder {
         public TextView txt;
 
         public FooterViewHolder(View itemView) {
