@@ -47,15 +47,17 @@ public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAd
             vh.title.setText(mData.get(position).getTitle());
             vh.time.setText(mData.get(position).getCtime());
             if (!TextUtils.isEmpty(mData.get(position).getPicUrl())) {
-                Uri uri = Uri.parse(mData.get(position).getPicUrl());
+                vh.img.setVisibility(View.VISIBLE);
                 RequestOptions options = new RequestOptions()
                         .centerCrop()
                         .placeholder(R.mipmap.ic_launcher)
                         .error(R.mipmap.ic_launcher);
                 Glide.with(mContext)
-                        .load(uri)
+                        .load(mData.get(position).getPicUrl())
                         .apply(options)
                         .into(vh.img);
+            } else {
+                vh.img.setVisibility(View.GONE);
             }
         }
     }
