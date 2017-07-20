@@ -169,16 +169,13 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
             params.put("num", pageSize);
             params.put("page", pageIndex);
             Call<NewsListResult> news = HttpCall.getApiService().getNews(urlStr, params);
+            isLoading = true;
             news.enqueue(new Callback<NewsListResult>() {
                 @Override
                 public void onResponse(Call<NewsListResult> call, Response<NewsListResult> response) {
                     List<NewModel> result = response.body().getNewslist();
                     if (result != null && result.size() > 0) {
-                        if (1 == pageIndex) {
-                            mDatas = result;
-                        } else {
-                            mDatas.addAll(result);
-                        }
+                        mDatas.addAll(result);
                         pageIndex++;
                         initViewData();
                     } else {
