@@ -1,11 +1,9 @@
 package top.cokernut.news;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
-import java.util.ArrayList;
-import java.util.List;
+import top.cokernut.news.utils.ActivityManager;
 
 /**
  * Created by Admin on 2016/6/3.
@@ -13,7 +11,6 @@ import java.util.List;
 public class NewsApp extends Application {
 
     private static Context mContext;
-    private static List<Activity> mActivities = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -25,18 +22,8 @@ public class NewsApp extends Application {
         return mContext;
     }
 
-    public static void addActivity(Activity activity) {
-        mActivities.add(activity);
-    }
-
-    public static void removeActivity(Activity activity) {
-        mActivities.remove(activity);
-    }
-
     public static void exitAll() {
-        for (Activity activity : mActivities) {
-            activity.finish();
-        }
+        ActivityManager.getInstance().popAllActivity();
         System.exit(0);
     }
 }
