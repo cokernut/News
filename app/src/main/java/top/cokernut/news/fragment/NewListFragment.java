@@ -13,13 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +34,6 @@ import top.cokernut.news.base.OnRecyclerItemClickListener;
 import top.cokernut.news.config.URLConfig;
 import top.cokernut.news.dialog.CustomDialog;
 import top.cokernut.news.http.HttpCall;
-import top.cokernut.news.http.result.NewsListResult;
 import top.cokernut.news.model.NewModel;
 
 public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -168,7 +168,66 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
             params.put("key", URLConfig.API_KEY);
             params.put("num", pageSize);
             params.put("page", pageIndex);
-            Call<NewsListResult> news = HttpCall.getApiService().getNews(urlStr, params);
+            //fastjson
+            Call<String> news = HttpCall.getApiService().getNews(urlStr, params);
+            isLoading = true;
+            news.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    JSONObject json = JSON.parseObject(response.body());
+                    List<NewModel> result = JSON.parseArray(json.getString("newslist"), NewModel.class);
+                    if (result != null && result.size() > 0) {
+                        mDatas.addAll(result);
+                        pageIndex++;
+                        initViewData();
+                    } else {
+                        Snackbar.make(mRecyclerView, "没有更多了！", Snackbar.LENGTH_SHORT).show();
+                    }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Snackbar.make(mRecyclerView, "加载失败！", Snackbar.LENGTH_LONG).show();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+            });
+            //JackSon
+           /* Call<String> news = HttpCall.getApiService().getNews(urlStr, params);
+            isLoading = true;
+            news.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    List<NewModel> result = new ArrayList<>();
+                    try {
+                        JsonNode node = mapper.readTree(response.body());
+                        result = mapper.readValue(node.get("newslist").asText(), new TypeReference<List<NewModel>>() {});
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (result != null && result.size() > 0) {
+                        mDatas.addAll(result);
+                        pageIndex++;
+                        initViewData();
+                    } else {
+                        Snackbar.make(mRecyclerView, "没有更多了！", Snackbar.LENGTH_SHORT).show();
+                    }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Snackbar.make(mRecyclerView, "加载失败！", Snackbar.LENGTH_LONG).show();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+            });*/
+            //GSON
+            /*Call<NewsListResult> news = HttpCall.getApiService().getNews(urlStr, params);
             isLoading = true;
             news.enqueue(new Callback<NewsListResult>() {
                 @Override
@@ -191,7 +250,7 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     mSwipeRefreshLayout.setRefreshing(false);
                     isLoading = false;
                 }
-            });
+            });*/
         }
         /*if (!isLoading) {
             RequestParams params = new RequestParams();

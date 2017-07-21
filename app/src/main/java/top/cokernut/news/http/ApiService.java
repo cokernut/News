@@ -2,6 +2,7 @@ package top.cokernut.news.http;
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -13,7 +14,10 @@ import top.cokernut.news.http.result.NewsListResult;
  */
 
 public interface ApiService {
+    //Gson
+//    @POST("{type}")
+//    Call<NewsListResult> getNews(@Path("type") String type, @QueryMap Map<String, Object> args);
 
     @POST("{type}")
-    Call<NewsListResult> getNews(@Path("type") String type, @QueryMap Map<String, Object> args);
+    Call<String> getNews(@Path("type") String type, @QueryMap Map<String, Object> args);
 }

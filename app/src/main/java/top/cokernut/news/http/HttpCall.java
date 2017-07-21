@@ -80,7 +80,9 @@ public class HttpCall {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(URLConfig.BASE_URL)
                     //.client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(FastJsonConverterFactory.create())
+                    //.addConverterFactory(GsonConverterFactory.create())
+                    //.addConverterFactory(JacksonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
             apiService = retrofit.create(ApiService.class);
