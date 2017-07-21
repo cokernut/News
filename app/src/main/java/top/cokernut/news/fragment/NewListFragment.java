@@ -17,23 +17,15 @@ import android.view.ViewGroup;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import top.cokernut.news.R;
 import top.cokernut.news.activity.DetailActivity;
 import top.cokernut.news.activity.MainActivity;
@@ -42,7 +34,7 @@ import top.cokernut.news.base.OnRVScrollListener;
 import top.cokernut.news.base.OnRecyclerItemClickListener;
 import top.cokernut.news.config.URLConfig;
 import top.cokernut.news.dialog.CustomDialog;
-import top.cokernut.news.http.HttpCall;
+import top.cokernut.news.net.HttpCall;
 import top.cokernut.news.model.NewModel;
 
 public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {

@@ -1,4 +1,4 @@
-package top.cokernut.news.http;
+package top.cokernut.news.net;
 
 import java.util.Map;
 

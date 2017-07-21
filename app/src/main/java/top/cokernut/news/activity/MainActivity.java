@@ -21,11 +21,12 @@ import java.util.List;
 import top.cokernut.news.NewsApp;
 import top.cokernut.news.R;
 import top.cokernut.news.adapter.ViewPagerAdapter;
+import top.cokernut.news.base.BaseActivity;
 import top.cokernut.news.config.URLConfig;
 import top.cokernut.news.fragment.NewListFragment;
 import top.cokernut.news.model.URLModel;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NewsApp.addActivity(this);
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -204,11 +204,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    protected void onDestroy() {
-        NewsApp.removeActivity(this);
-        super.onDestroy();
     }
 }
