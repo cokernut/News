@@ -2,6 +2,7 @@ package top.cokernut.news;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import top.cokernut.news.utils.ActivityManager;
 
@@ -11,6 +12,12 @@ import top.cokernut.news.utils.ActivityManager;
 public class NewsApp extends Application {
 
     private static Context mContext;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate() {
