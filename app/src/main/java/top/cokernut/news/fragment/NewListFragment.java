@@ -25,6 +25,8 @@ import java.util.Map;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.internal.util.ConnectConsumer;
 import io.reactivex.schedulers.Schedulers;
 import top.cokernut.news.R;
 import top.cokernut.news.activity.DetailActivity;
@@ -176,7 +178,6 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
              Schedulers.io(): I/O 操作（读写文件、读写数据库、网络信息交互等）所使用的 Scheduler。行为模式和 newThread() 差不多，区别在于 io() 的内部实现是是用一个无数量上限的线程池，可以重用空闲的线程，因此多数情况下 io() 比 newThread() 更有效率。不要把计算工作放在 io() 中，可以避免创建不必要的线程。
              Schedulers.computation(): 计算所使用的 Scheduler。这个计算指的是 CPU 密集型计算，即不会被 I/O 等操作限制性能的操作，例如图形的计算。这个 Scheduler 使用的固定的线程池，大小为 CPU 核数。不要把 I/O 操作放在 computation() 中，否则 I/O 操作的等待时间会浪费 CPU。
              另外， Android 还有一个专用的 AndroidSchedulers.mainThread()，它指定的操作将在 Android 主线程运行。*/
-            isLoading = true;
             HttpCall.getApiService().getNewsRx(urlStr, params)
                     //subscribeOn(): 指定 subscribe() 所发生的线程，即 Observable.OnSubscribe 被激活时所处的线程,或者叫做事件产生的线程。
                     //subscribeOn() 的位置放在哪里都可以，但它是只能调用一次的。当使用了多个 subscribeOn() 的时候，只有第一个 subscribeOn() 起作用。
@@ -185,6 +186,12 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     // 而如果在 doOnSubscribe() 之后有 subscribeOn() 的话，它将执行在离它最近的 subscribeOn() 所指定的线程
                     // 在 doOnSubscribe()的后面跟一个 subscribeOn() ，就能指定准备工作的线程了
                     .subscribeOn(Schedulers.io())
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(Disposable disposable) throws Exception {
+                            isLoading = true;
+                        }
+                    })
                     .subscribeOn(AndroidSchedulers.mainThread())
                     //observeOn(): 指定 Subscriber 所运行在的线程,或者叫做事件消费的线程。observeOn() 指定的是它之后的操作所在的线程。
                     //因此如果有多次切换线程的需求，只要在每个想要切换线程的位置调用一次 observeOn() 即可
