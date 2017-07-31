@@ -17,11 +17,55 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        release {
+        debug {
+            //在编译打包时会给包名加上后缀
+            applicationIdSuffix '.debug'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+//    sourceSets {
+//        //main.java.srcDirs += 'src/main/kotlin'
+//        main {
+//            // java.srcDirs = 'src/main/java'
+//            java.srcDirs 'src/main/kotlin'
+//        }
+//    }
+//    signingConfigs {
+//        release {
+//            storeFile file(KEYSTORE_FILE)
+//            storePassword KEYSTORE_PASSWORD
+//            keyAlias KEY_ALIAS
+//            keyPassword KEY_PASSWORD
+//        }
+//    }
+//    dataBinding {
+//        enabled = true
+//    }
+//    productFlavors {
+//        pro {
+//            applicationId 'top.cokernut.news'
+//            //添加维度不然报错
+//            flavorDimensions 'pro'
+//            sourceSets {
+//                main.java.srcDirs 'src/main/java'
+//            }
+//        }
+//        com {
+//            applicationId 'top.cokernut.news'
+//            //添加维度不然报错
+//            flavorDimensions 'com'
+//            sourceSets {
+//                main.java.srcDirs 'src/main/java'
+//            }
+//        }
+//        xiaomi {}
+//        qq {}
+//        baidu {}
+//    }
+//    productFlavors.all { flavor ->
+//        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+//    }
     //jackson META-INF/LICENSE Error
     /*packagingOptions {
         exclude 'META-INF/LICENSE'
@@ -48,4 +92,10 @@ dependencies {
    // compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.alibaba:fastjson:1.1.60.android'
+    //Umeng统计,渠道打包
+    //compile 'com.umeng.analytics:analytics:latest.integration'
+    //implementation本模块可以看到
+    //api本项目可以看到
+    //api 'com.alibaba:fastjson:1.1.60.android'
+    //compile 过时
 }
