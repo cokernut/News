@@ -95,12 +95,14 @@ public abstract class BaseRecyclerAdapter<E, VH extends BaseRecyclerAdapter.Base
         int position = mData.indexOf(model);
         mData.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size() - position);
     }
 
     //删除数据
     public void removeItem(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size() - position);
     }
 
     //改变数据
@@ -118,7 +120,12 @@ public abstract class BaseRecyclerAdapter<E, VH extends BaseRecyclerAdapter.Base
 
     //移动数据
     public void moveItem(int fromPosition, int toPosition) {
-        Collections.swap(mData, fromPosition, toPosition);
+        mData.add(toPosition, mData.get(fromPosition));
+        if (fromPosition > toPosition) {
+            mData.remove(fromPosition + 1);
+        } else {
+            mData.remove(fromPosition);
+        }
         notifyItemMoved(fromPosition, toPosition);
     }
 
