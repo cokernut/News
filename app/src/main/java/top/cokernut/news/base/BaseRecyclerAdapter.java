@@ -20,16 +20,11 @@ public abstract class BaseRecyclerAdapter<E, VH extends BaseRecyclerAdapter.Base
     protected LayoutInflater mInflater;
     protected Context mContext;
     private ItemTouchHelper mItemTouchHelper;
-    private int headerViewCount = 1; //头部数量
 
     public BaseRecyclerAdapter(Context context, List<E> data) {
         this.mContext = context;
         this.mData = data;
         this.mInflater = LayoutInflater.from(context);
-    }
-
-    public boolean isHeaderView(int position) {
-        return headerViewCount != 0 && position < headerViewCount;
     }
 
     //拖动和滑动事件
