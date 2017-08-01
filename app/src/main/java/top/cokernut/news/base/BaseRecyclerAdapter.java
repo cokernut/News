@@ -120,12 +120,7 @@ public abstract class BaseRecyclerAdapter<E, VH extends BaseRecyclerAdapter.Base
 
     //移动数据
     public void moveItem(int fromPosition, int toPosition) {
-        mData.add(toPosition, mData.get(fromPosition));
-        if (fromPosition > toPosition) {
-            mData.remove(fromPosition + 1);
-        } else {
-            mData.remove(fromPosition);
-        }
+        Collections.swap(mData, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
     }
 

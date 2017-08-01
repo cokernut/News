@@ -132,14 +132,14 @@ public class NewListFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     public void onClick(DialogInterface dialog, int which) {
                         mAdapter.removeItem(position);
                         dialog.dismiss();
-                        Snackbar.make(mRecyclerView, "我们将会推送更多类似的内容！", Snackbar.LENGTH_LONG).show();
-                              //  .setAction("Action", null).show();
                     }
                 });
 
                 builder.setNegativeButton(R.string.like, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        Snackbar.make(mRecyclerView, "我们将会推送更多类似的内容！", Snackbar.LENGTH_LONG).show();
+                        //  .setAction("Action", null).show();
                     }
                 });
                 builder.create().show();
