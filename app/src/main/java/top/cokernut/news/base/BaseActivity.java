@@ -15,6 +15,9 @@ public class BaseActivity extends AppCompatActivity {
         ActivityManager.getInstance().pushActivity(this);
     }
 
+    /**
+     * 统一解决返回按钮无用的问题
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

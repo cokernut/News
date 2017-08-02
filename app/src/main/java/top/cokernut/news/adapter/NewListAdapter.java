@@ -20,8 +20,6 @@ import top.cokernut.news.model.NewModel;
  * Created by Cokernut on 2016/6/7.
  */
 public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAdapter.BaseViewHolder> {
-    private static final int NEW = 1;
-    private static final int FOOTER = 2;
 
     public NewListAdapter(Context context, List data) {
         super(context, data);
@@ -29,18 +27,11 @@ public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAd
 
     @Override
     protected BaseViewHolder createView(ViewGroup parent, int viewType) {
-        if (NEW == viewType) {
-            return new ViewHolder(mInflater.inflate(R.layout.item_new_list, parent, false));
-        } else {
-            return new FooterViewHolder(mInflater.inflate(R.layout.item_new_list_footer, parent, false));
-        }
+        return new ViewHolder(mInflater.inflate(R.layout.item_new_list, parent, false));
     }
 
     @Override
     protected void bindView(BaseViewHolder holder, int position) {
-        if (mData.get(position) == null) {
-            return;
-        }
         if (holder instanceof ViewHolder) {
             ViewHolder vh = (ViewHolder) holder;
             vh.title.setText(mData.get(position).getTitle());
@@ -63,11 +54,7 @@ public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAd
 
     @Override
     protected int getItemType(int position) {
-        if (mData.get(position) == null) {
-            return FOOTER;
-        } else {
-            return NEW;
-        }
+        return super.getItemType(position);
     }
 
     static class ViewHolder extends BaseRecyclerAdapter.BaseViewHolder {
@@ -80,15 +67,6 @@ public class NewListAdapter extends BaseRecyclerAdapter<NewModel, BaseRecyclerAd
             title = (TextView) itemView.findViewById(R.id.title);
             time = (TextView) itemView.findViewById(R.id.time);
             img = (ImageView) itemView.findViewById(R.id.img);
-        }
-    }
-
-    static class FooterViewHolder extends BaseRecyclerAdapter.BaseViewHolder {
-        public TextView txt;
-
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-            txt = (TextView) itemView.findViewById(R.id.tv_txt);
         }
     }
 }
