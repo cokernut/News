@@ -82,13 +82,11 @@ public class DetailActivity extends BaseActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            Log.d("newProgress--->", newProgress + "");
-            // TODO load
-            if (newProgress == 100) {
+          /*  if (newProgress == 100) {
 
             } else if (newProgress != 100) {
 
-            }
+            }*/
         }
 
         @Override
