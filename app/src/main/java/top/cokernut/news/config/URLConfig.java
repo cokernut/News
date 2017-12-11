@@ -45,7 +45,7 @@ public class URLConfig {
 
     private static List<URLModel> urls = new ArrayList<>();
     public static final String BASE_URL = "http://api.tianapi.com/";
-    public static final String API_KEY = "fc7d0977e4da244c10a483f745";
+    public static final String API_KEY = "fc7d09745";
     static {
         urls.add(new URLModel("科技新闻", "keji"));
         urls.add(new URLModel("移动互联", "mobile"));
