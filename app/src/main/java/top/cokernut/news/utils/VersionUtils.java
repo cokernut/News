@@ -5,9 +5,7 @@ import android.content.pm.PackageManager;
 
 import top.cokernut.news.NewsApp;
 
-/**
- * Created by tangqi on 9/25/15.
- */
+
 public class VersionUtils {
 
     public static String setUpVersionName(Context context) {
